@@ -1,0 +1,66 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+a {
+  text-decoration: none;
+}
+
+.flex-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.navbar {
+  font-family: "JetBrains Mono", "JetBrains Mono Fallback", monospace;
+  align-items: start;
+}
+
+.navbar a {
+  margin-right: 1.6875rem;
+  font-weight: 900;
+  font-size: 18px;
+}
+
+.main-container {
+  margin: 3.375rem 0rem 6.75rem 0rem;
+  padding: 0rem 1.125rem;
+}
+
+.navbar img {
+  height: 79px;
+  width: auto;
+  object-fit: contain;
+  margin-left: auto;
+}
+
+.text-container,
+.navbar {
+  margin: 0rem 25.375rem;
+  padding: 1.125rem;
+}
+.text-container {
+  font-family: "JetBrains Mono", "JetBrains Mono Fallback", monospace;
+}
+
+.name {
+  font-size: 27px;
+  font-family: ui-sans-serif, system-ui, sans-serif, Apple Color Emoji,
+    Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
+}
+
+.description {
+  margin-top: 1rem;
+  gap: 0.5rem;
+}
+
+.description p + p {
+  margin-top: 1em; /* Adjust the value as needed */
+}
