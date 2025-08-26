@@ -27,6 +27,7 @@ a {
   margin-right: 1.6875rem;
   font-weight: 900;
   font-size: 18px;
+  color: #7b76c1;
 }
 
 .main-container {
@@ -42,7 +43,8 @@ a {
 }
 
 .text-container,
-.navbar {
+.navbar,
+.footer {
   margin: 0rem 25.375rem;
   padding: 1.125rem;
 }
@@ -63,4 +65,22 @@ a {
 
 .description p + p {
   margin-top: 1em; /* Adjust the value as needed */
+}
+
+.footer {
+  border-style: solid;
+  border-color: #7b76c1;
+  border-top-width: 1px;
+  border-bottom-width: 1px;
+  border-right-width: 0px;
+  border-left-width: 0px;
+  gap: 0.75rem;
+  font-weight: 700;
+}
+
+.footer a,
+.footer p {
+  color: #7b76c1;
+  text-decoration: underline;
+  text-decoration-color: #7b76c1;
 }
