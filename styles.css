@@ -45,7 +45,8 @@ a {
 .text-container,
 .navbar,
 .footer,
-.copyright {
+.copyright,
+.school-leadership {
   margin: 0rem 25.375rem;
   padding: 1.125rem;
 }
@@ -101,8 +102,12 @@ a {
   text-align: left;
 }
 
+.school-leadership {
+  font-family: "JetBrains Mono", "JetBrains Mono Fallback", monospace;
+}
 .projects,
-.experience {
+.experience,
+.school-leadership {
   font-size: 14px;
 }
 .projects {
