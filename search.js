@@ -1,6 +1,20 @@
 (function () {
   const PER_PAGE = 4;
 
+  // ── fuse.js config ─────────────────────────────────────────────────────────
+  const fuse = new Fuse(resumeData, {
+    keys: [
+      { name: "title",    weight: 0.4 },
+      { name: "body",     weight: 0.3 },
+      { name: "tag",      weight: 0.1 },
+      { name: "keywords", weight: 0.2 },
+    ],
+    threshold:        0.4,   // 0 = exact, 1 = match anything — 0.4 is a good middle ground
+    ignoreLocation:   true,  // don't penalise matches that aren't near the start of the string
+    minMatchCharLength: 2,
+  });
+
+  // ── mount ──────────────────────────────────────────────────────────────────
   const mount = document.getElementById("search-mount");
   if (!mount) return;
 
@@ -40,6 +54,7 @@
     </div>
   `;
 
+  // ── refs ───────────────────────────────────────────────────────────────────
   const input      = document.getElementById("search-input");
   const meta       = document.getElementById("results-meta");
   const list       = document.getElementById("results-list");
@@ -48,40 +63,39 @@
   const btnNext    = document.getElementById("btn-next");
   const pageLabel  = document.getElementById("page-indicator");
 
+  // ── state ──────────────────────────────────────────────────────────────────
   let currentResults = [];
   let currentPage    = 1;
   let focusedIndex   = -1;
 
+  // ── search ─────────────────────────────────────────────────────────────────
   function search(query) {
-    query = query.trim().toLowerCase();
+    query = query.trim();
     if (!query) return [];
-    return resumeData.filter((item) => {
-      const haystack = [item.title, item.body, item.tag, ...(item.keywords || [])]
-        .join(" ")
-        .toLowerCase();
-      return haystack.includes(query);
-    });
+    return fuse.search(query).map((r) => r.item);
   }
 
+  // ── highlight ──────────────────────────────────────────────────────────────
   function highlight(text, query) {
     if (!query) return text;
-    const escaped = query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const escaped = query.trim().replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
     return text.replace(new RegExp(`(${escaped})`, "gi"), "<mark>$1</mark>");
   }
 
+  // ── render page ────────────────────────────────────────────────────────────
   function renderPage() {
     list.innerHTML = "";
-    focusedIndex = -1;
+    focusedIndex   = -1;
 
     const totalPages = Math.ceil(currentResults.length / PER_PAGE);
     const start      = (currentPage - 1) * PER_PAGE;
     const pageItems  = currentResults.slice(start, start + PER_PAGE);
-    const query      = input.value.trim().toLowerCase();
+    const query      = input.value.trim();
 
     pageItems.forEach((item) => {
       const card = document.createElement("div");
       card.className = "result-card";
-      card.tabIndex = -1;
+      card.tabIndex  = -1;
       card.innerHTML = `
         <div class="result-card-top">
           <span class="result-tag">${item.tag}</span>
@@ -95,22 +109,22 @@
 
     if (totalPages > 1) {
       pagination.style.display = "flex";
-      pageLabel.textContent = `${currentPage} / ${totalPages}`;
-      btnPrev.disabled = currentPage === 1;
-      btnNext.disabled = currentPage === totalPages;
+      pageLabel.textContent    = `${currentPage} / ${totalPages}`;
+      btnPrev.disabled         = currentPage === 1;
+      btnNext.disabled         = currentPage === totalPages;
     } else {
       pagination.style.display = "none";
     }
   }
 
-
+  // ── render ─────────────────────────────────────────────────────────────────
   function render(results, query) {
     currentResults = results;
     currentPage    = 1;
 
     if (!query.trim()) {
-      meta.textContent = "";
-      list.innerHTML   = "";
+      meta.textContent         = "";
+      list.innerHTML           = "";
       pagination.style.display = "none";
       return;
     }
@@ -123,6 +137,7 @@
     renderPage();
   }
 
+  // ── keyboard nav ───────────────────────────────────────────────────────────
   function setFocus(index) {
     const cards = list.querySelectorAll(".result-card");
     cards.forEach((c) => c.classList.remove("focused"));
@@ -133,6 +148,7 @@
     }
   }
 
+  // ── events ─────────────────────────────────────────────────────────────────
   let debounceTimer;
   input.addEventListener("input", () => {
     clearTimeout(debounceTimer);
@@ -156,18 +172,11 @@
   });
 
   btnPrev.addEventListener("click", () => {
-    if (currentPage > 1) {
-      currentPage--;
-      renderPage();
-    }
+    if (currentPage > 1) { currentPage--; renderPage(); }
   });
 
   btnNext.addEventListener("click", () => {
-    const totalPages = Math.ceil(currentResults.length / PER_PAGE);
-    if (currentPage < totalPages) {
-      currentPage++;
-      renderPage();
-    }
+    if (currentPage < Math.ceil(currentResults.length / PER_PAGE)) { currentPage++; renderPage(); }
   });
 
   document.querySelectorAll(".suggestion-chip").forEach((chip) => {
