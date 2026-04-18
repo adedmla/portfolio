@@ -1,0 +1,174 @@
+#search-label {
+  font-weight: 900;
+  font-size: 14px;
+  margin-bottom: 0.75rem;
+  display: block;
+}
+
+#search-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid #7b76c1;
+  border-radius: 6px;
+  padding: 9px 14px;
+  margin-bottom: 1rem;
+}
+
+#search-caret {
+  color: #7b76c1;
+  font-size: 15px;
+  user-select: none;
+}
+
+#search-input {
+  all: unset;
+  flex: 1;
+  font-family: "JetBrains Mono", "JetBrains Mono Fallback", monospace;
+  font-size: 14px;
+  color: inherit;
+}
+
+#search-input::placeholder {
+  color: #aaa;
+}
+
+#search-hints {
+  font-size: 11px;
+  color: #aaa;
+  white-space: nowrap;
+}
+
+#search-hints kbd {
+  display: inline-block;
+  border: 0.5px solid #ccc;
+  border-radius: 3px;
+  padding: 0px 4px;
+  font-family: inherit;
+  font-size: 10px;
+}
+
+#results-meta {
+  font-size: 11px;
+  color: #aaa;
+  margin-bottom: 0.6rem;
+  min-height: 1.2em;
+}
+
+#results-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.result-card {
+  border: 0.5px solid #ddd;
+  border-radius: 8px;
+  padding: 11px 14px;
+  transition: border-color 0.15s;
+  outline: none;
+}
+
+.result-card:hover,
+.result-card.focused {
+  border-color: #7b76c1;
+}
+
+.result-card-top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.result-tag {
+  font-size: 10px;
+  color: #7b76c1;
+  background: #eeedfe;
+  border-radius: 4px;
+  padding: 1px 6px;
+}
+
+.result-period {
+  font-size: 11px;
+  color: #aaa;
+  margin-left: auto;
+}
+
+.result-title {
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 3px;
+}
+
+.result-body {
+  font-size: 12px;
+  color: #666;
+  line-height: 1.5;
+}
+
+.result-body mark {
+  background: #eeedfe;
+  color: #7b76c1;
+  border-radius: 2px;
+  padding: 0 2px;
+}
+
+/* ── pagination ────────────────────────────────────────────────────────────── */
+
+#pagination {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  font-size: 11px;
+  color: #aaa;
+}
+
+.page-btn {
+  all: unset;
+  cursor: pointer;
+  color: #7b76c1;
+  font-family: "JetBrains Mono", "JetBrains Mono Fallback", monospace;
+  font-size: 11px;
+}
+
+.page-btn:disabled {
+  color: #ccc;
+  cursor: default;
+}
+
+#page-indicator {
+  margin: 0 0.25rem;
+}
+
+/* ── suggestion chips ──────────────────────────────────────────────────────── */
+
+#search-suggestions {
+  margin-top: 0.75rem;
+  font-size: 11px;
+  color: #aaa;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  align-items: center;
+}
+
+.suggestion-chip {
+  color: #7b76c1;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.suggestion-chip:hover {
+  opacity: 0.75;
+}
+
+/* ── responsive ────────────────────────────────────────────────────────────── */
+
+@media screen and (max-width: 480px) {
+  #search-hints {
+    display: none;
+  }
+}
