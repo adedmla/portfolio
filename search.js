@@ -1,7 +1,8 @@
 (function () {
   const PER_PAGE = 4;
+  const AI_MODE = true; // flip this to false to go back to fuse
+  const API_URL = "https://weg7pdzoa0.execute-api.us-east-1.amazonaws.com/query";
 
-  // ── fuse.js config ─────────────────────────────────────────────────────────
   const fuse = new Fuse(resumeData, {
     keys: [
       { name: "title",    weight: 0.4 },
@@ -9,23 +10,23 @@
       { name: "tag",      weight: 0.1 },
       { name: "keywords", weight: 0.2 },
     ],
-    threshold:        0.4,   // 0 = exact, 1 = match anything — 0.4 is a good middle ground
-    ignoreLocation:   true,  // don't penalise matches that aren't near the start of the string
+    threshold:        0.4,
+    ignoreLocation:   true,
     minMatchCharLength: 2,
   });
 
-  // ── mount ──────────────────────────────────────────────────────────────────
   const mount = document.getElementById("search-mount");
   if (!mount) return;
 
+  // label and placeholder change depending on which mode we're in
   mount.innerHTML = `
-    <span id="search-label">query</span>
+    <span id="search-label">${AI_MODE ? "ask ai" : "query"}</span>
     <div id="search-wrapper">
       <span id="search-caret">›</span>
       <input
         id="search-input"
         type="text"
-        placeholder='try "python", "aws", "rag", "hackathon" ...'
+        placeholder='${AI_MODE ? "ask anything about ade ..." : "try \"python\", \"aws\", \"rag\", \"hackathon\" ..."}'
         autocomplete="off"
         spellcheck="false"
       />
@@ -42,19 +43,24 @@
     </div>
     <div id="search-suggestions">
       <span>try:</span>
-      <span class="suggestion-chip" data-q="machine learning">machine learning</span>
+      <span class="suggestion-chip" data-q="${AI_MODE ? "what has ade built with python?" : "machine learning"}">
+        ${AI_MODE ? "what has ade built with python?" : "machine learning"}
+      </span>
       <span style="color:#ccc">·</span>
-      <span class="suggestion-chip" data-q="kubernetes">kubernetes</span>
+      <span class="suggestion-chip" data-q="${AI_MODE ? "what internships has ade done?" : "kubernetes"}">
+        ${AI_MODE ? "what internships has ade done?" : "kubernetes"}
+      </span>
       <span style="color:#ccc">·</span>
-      <span class="suggestion-chip" data-q="react">react</span>
+      <span class="suggestion-chip" data-q="${AI_MODE ? "what leadership roles is ade in?" : "react"}">
+        ${AI_MODE ? "what leadership roles is ade in?" : "react"}
+      </span>
       <span style="color:#ccc">·</span>
-      <span class="suggestion-chip" data-q="nasa">nasa</span>
-      <span style="color:#ccc">·</span>
-      <span class="suggestion-chip" data-q="python">python</span>
+      <span class="suggestion-chip" data-q="${AI_MODE ? "what are ade's strongest skills?" : "nasa"}">
+        ${AI_MODE ? "what are ade's strongest skills?" : "nasa"}
+      </span>
     </div>
   `;
 
-  // ── refs ───────────────────────────────────────────────────────────────────
   const input      = document.getElementById("search-input");
   const meta       = document.getElementById("results-meta");
   const list       = document.getElementById("results-list");
@@ -63,26 +69,22 @@
   const btnNext    = document.getElementById("btn-next");
   const pageLabel  = document.getElementById("page-indicator");
 
-  // ── state ──────────────────────────────────────────────────────────────────
   let currentResults = [];
   let currentPage    = 1;
   let focusedIndex   = -1;
 
-  // ── search ─────────────────────────────────────────────────────────────────
   function search(query) {
     query = query.trim();
     if (!query) return [];
     return fuse.search(query).map((r) => r.item);
   }
 
-  // ── highlight ──────────────────────────────────────────────────────────────
   function highlight(text, query) {
     if (!query) return text;
     const escaped = query.trim().replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
     return text.replace(new RegExp(`(${escaped})`, "gi"), "<mark>$1</mark>");
   }
 
-  // ── render page ────────────────────────────────────────────────────────────
   function renderPage() {
     list.innerHTML = "";
     focusedIndex   = -1;
@@ -117,7 +119,6 @@
     }
   }
 
-  // ── render ─────────────────────────────────────────────────────────────────
   function render(results, query) {
     currentResults = results;
     currentPage    = 1;
@@ -137,24 +138,61 @@
     renderPage();
   }
 
-  // ── keyboard nav ───────────────────────────────────────────────────────────
-  function setFocus(index) {
-    const cards = list.querySelectorAll(".result-card");
-    cards.forEach((c) => c.classList.remove("focused"));
-    if (index >= 0 && index < cards.length) {
-      cards[index].classList.add("focused");
-      cards[index].scrollIntoView({ block: "nearest" });
-      focusedIndex = index;
+  // ai response gets its own card with the model name in the corner
+  function renderAI(answer) {
+    list.innerHTML = `
+      <div class="result-card">
+        <div class="result-card-top">
+          <span class="result-tag">ai</span>
+          <span class="result-period">nova micro · aws bedrock</span>
+        </div>
+        <div class="result-body" style="white-space: pre-wrap;">${answer}</div>
+      </div>
+    `;
+    pagination.style.display = "none";
+  }
+
+  let aiDebounce;
+  async function queryAI(query) {
+    if (!query.trim()) {
+      meta.textContent = "";
+      list.innerHTML   = "";
+      return;
+    }
+
+    meta.textContent = "thinking ..."; // gives the user some feedback while we wait
+    list.innerHTML   = "";
+
+    try {
+      const res = await fetch(API_URL, {
+        method:  "POST",
+        headers: { "Content-Type": "application/json" },
+        body:    JSON.stringify({ query }),
+      });
+      const data = await res.json();
+
+      if (data.answer) {
+        meta.textContent = `ai response for "${query}"`;
+        renderAI(data.answer);
+      } else {
+        meta.textContent = "something went wrong, try again";
+      }
+    } catch (e) {
+      meta.textContent = "could not reach ai — try again"; // probably a network issue
     }
   }
 
-  // ── events ─────────────────────────────────────────────────────────────────
   let debounceTimer;
   input.addEventListener("input", () => {
     clearTimeout(debounceTimer);
-    debounceTimer = setTimeout(() => {
-      render(search(input.value), input.value);
-    }, 120);
+    if (AI_MODE) {
+      clearTimeout(aiDebounce);
+      aiDebounce = setTimeout(() => queryAI(input.value), 600); // longer debounce so we don't spam bedrock
+    } else {
+      debounceTimer = setTimeout(() => {
+        render(search(input.value), input.value);
+      }, 120);
+    }
   });
 
   input.addEventListener("keydown", (e) => {
@@ -167,9 +205,19 @@
       setFocus(Math.max(focusedIndex - 1, 0));
     } else if (e.key === "Escape") {
       input.value = "";
-      render([], "");
+      AI_MODE ? queryAI("") : render([], "");
     }
   });
+
+  function setFocus(index) {
+    const cards = list.querySelectorAll(".result-card");
+    cards.forEach((c) => c.classList.remove("focused"));
+    if (index >= 0 && index < cards.length) {
+      cards[index].classList.add("focused");
+      cards[index].scrollIntoView({ block: "nearest" });
+      focusedIndex = index;
+    }
+  }
 
   btnPrev.addEventListener("click", () => {
     if (currentPage > 1) { currentPage--; renderPage(); }
