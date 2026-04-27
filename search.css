@@ -150,8 +150,9 @@
   color: #aaa;
   display: flex;
   flex-wrap: wrap;
-  gap: 0.4rem;
+  gap: 0.3rem 0.4rem;
   align-items: center;
+  line-height: 1.8;
 }
 
 .suggestion-chip {
@@ -159,6 +160,7 @@
   cursor: pointer;
   text-decoration: underline;
   text-underline-offset: 2px;
+  white-space: nowrap; /* stops individual chips from breaking mid-word */
 }
 
 .suggestion-chip:hover {

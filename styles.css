@@ -42,13 +42,16 @@ a {
   margin-left: auto;
 }
 
+/* tightened up the desktop margins — was way too spread out before */
 .text-container,
 .navbar,
 .footer,
 .copyright,
 .school-leadership {
-  margin: 0rem 25.375rem;
+  margin: 0rem auto;
   padding: 1.125rem;
+  max-width: 560px;
+  width: 100%;
 }
 
 .text-container {
@@ -147,23 +150,30 @@ a {
   color: #7b76c1;
 }
 
+/* tablet */
 @media screen and (max-width: 1024px) {
   .text-container,
   .navbar,
   .footer,
   .copyright,
   .school-leadership {
-    margin: 0rem 8rem;
+    max-width: 560px;
+  }
+
+  .navbar img {
+    height: 65px;
   }
 }
 
+/* large mobile / small tablet */
 @media screen and (max-width: 768px) {
   .text-container,
   .navbar,
   .footer,
   .copyright,
   .school-leadership {
-    margin: 0rem 4rem;
+    max-width: 100%;
+    padding: 1rem 2rem;
   }
 
   .navbar img {
@@ -184,30 +194,31 @@ a {
   }
 }
 
+/* mobile */
 @media screen and (max-width: 480px) {
   .text-container,
   .navbar,
   .footer,
   .copyright,
   .school-leadership {
-    margin: 0rem 1rem;
+    padding: 0.875rem 1.25rem;
   }
 
   .main-container {
     margin: 2rem 0rem 4rem 0rem;
-    padding: 0rem 0.5rem;
+    padding: 0;
   }
 
   .navbar {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 1rem;
+    flex-direction: row; /* keep nav horizontal on mobile */
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
   }
 
   .navbar img {
     height: 50px;
-    align-self: center;
-    margin-left: 0;
+    margin-left: auto;
   }
 
   .name {
@@ -215,8 +226,8 @@ a {
   }
 
   .navbar a {
-    font-size: 16px;
-    margin-right: 1.2rem;
+    font-size: 15px;
+    margin-right: 1rem;
   }
 
   .text-container.flex-row {
