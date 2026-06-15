@@ -46,8 +46,7 @@ a {
 .text-container,
 .navbar,
 .footer,
-.copyright,
-.school-leadership {
+.copyright {
   margin: 0rem auto;
   padding: 1.125rem;
   max-width: 560px;
@@ -104,6 +103,21 @@ a {
 .work-title {
   font-weight: 900;
   text-align: left;
+  margin-bottom: 0.75rem;
+}
+
+.work-page {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+.work-section .experience-row + .experience-row {
+  margin-top: 0.5rem;
+}
+
+.work-section.school-leadership p + p {
+  margin-top: 0.5rem;
 }
 
 .school-leadership {
@@ -118,10 +132,12 @@ a {
 
 .projects {
   flex: 1;
+  min-width: 0;
 }
 
 .experience {
   flex: 1;
+  min-width: 0;
 }
 
 .experience-row {
@@ -146,6 +162,35 @@ a {
   color: #ccc;
 }
 
+.redacted {
+  position: relative;
+  display: inline-block;
+  color: transparent;
+  cursor: pointer;
+  user-select: none;
+}
+
+.redacted::after {
+  content: "";
+  position: absolute;
+  inset: -1px 0;
+  background: #000000;
+  border-radius: 2px;
+  transition: opacity 0.15s ease;
+}
+
+.redacted:hover,
+.redacted.is-revealed,
+.redacted:focus-visible {
+  color: inherit;
+}
+
+.redacted:hover::after,
+.redacted.is-revealed::after,
+.redacted:focus-visible::after {
+  opacity: 0;
+}
+
 .bullet-point {
   color: #7b76c1;
 }
@@ -155,8 +200,7 @@ a {
   .text-container,
   .navbar,
   .footer,
-  .copyright,
-  .school-leadership {
+  .copyright {
     max-width: 560px;
   }
 
@@ -170,8 +214,7 @@ a {
   .text-container,
   .navbar,
   .footer,
-  .copyright,
-  .school-leadership {
+  .copyright {
     max-width: 100%;
     padding: 1rem 2rem;
   }
@@ -184,8 +227,7 @@ a {
     font-size: 24px;
   }
 
-  .text-container.flex-row {
-    flex-direction: column;
+  .text-container.work-page {
     gap: 2rem;
   }
 
@@ -199,8 +241,7 @@ a {
   .text-container,
   .navbar,
   .footer,
-  .copyright,
-  .school-leadership {
+  .copyright {
     padding: 0.875rem 1.25rem;
   }
 
@@ -230,8 +271,7 @@ a {
     margin-right: 1rem;
   }
 
-  .text-container.flex-row {
-    flex-direction: column;
+  .text-container.work-page {
     gap: 1.5rem;
   }
 
