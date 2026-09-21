@@ -30,6 +30,18 @@ a {
   color: #7b76c1;
 }
 
+.navbar a[aria-current="page"] {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+body.page-work .text-container,
+body.page-work .navbar,
+body.page-work .footer,
+body.page-work .copyright {
+  max-width: 720px;
+}
+
 .main-container {
   margin: 3.375rem 0rem 6.75rem 0rem;
   padding: 0rem 1.125rem;
@@ -195,6 +207,233 @@ a {
   color: #7b76c1;
 }
 
+.work-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.work-header .work-title {
+  margin-bottom: 0;
+}
+
+.work-meta {
+  font-size: 11px;
+  color: #aaa;
+}
+
+.facet-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 1.5rem;
+}
+
+.facet-chip {
+  all: unset;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 11px;
+  color: #7b76c1;
+  border: 0.5px solid #7b76c1;
+  border-radius: 4px;
+  padding: 2px 8px;
+}
+
+.facet-chip.is-active {
+  background: #eeedfe;
+}
+
+.featured-system {
+  border: 0.5px solid #7b76c1;
+  border-radius: 8px;
+  padding: 12px 14px;
+  margin-bottom: 1.5rem;
+}
+
+.featured-system.is-target,
+.runbook.is-target {
+  background: #eeedfe;
+}
+
+.work-kicker {
+  font-size: 10px;
+  color: #7b76c1;
+  margin-bottom: 0.5rem;
+  letter-spacing: 0.04em;
+}
+
+.featured-toggle {
+  all: unset;
+  display: flex;
+  width: 100%;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+  cursor: pointer;
+}
+
+.featured-name {
+  display: block;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.featured-metric {
+  display: block;
+  font-size: 11px;
+  color: #888;
+  margin-top: 2px;
+}
+
+.sys-diagram {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.9rem;
+  width: 100%;
+}
+
+.sys-node {
+  border: 0.5px solid #7b76c1;
+  border-radius: 4px;
+  padding: 3px 8px;
+  font-size: 11px;
+  color: #7b76c1;
+}
+
+.sys-arrow {
+  color: #bbb;
+  font-size: 12px;
+}
+
+.runbook-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.runbook {
+  border-bottom: 0.5px solid #eee;
+}
+
+.runbook.is-compact {
+  border-bottom: 0;
+}
+
+.runbook-toggle {
+  all: unset;
+  box-sizing: border-box;
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  padding: 0.55rem 0;
+  font-family: inherit;
+  font-size: 14px;
+}
+
+.runbook-year {
+  flex-shrink: 0;
+}
+
+.runbook-title {
+  white-space: nowrap;
+}
+
+.runbook-toggle .company-name {
+  white-space: nowrap;
+}
+
+.runbook-chevron {
+  color: #7b76c1;
+  font-size: 11px;
+  margin-left: 0.15rem;
+  flex-shrink: 0;
+}
+
+.runbook-body {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.18s ease;
+}
+
+.runbook.is-open .runbook-body,
+.featured-system.is-open .runbook-body {
+  grid-template-rows: 1fr;
+}
+
+.runbook-body-inner {
+  overflow: hidden;
+  min-height: 0;
+}
+
+.featured-system.is-open .runbook-body-inner {
+  margin-top: 0.75rem;
+}
+
+.runbook-toggle:focus-visible,
+.featured-toggle:focus-visible,
+.facet-chip:focus-visible {
+  outline: 1px solid #7b76c1;
+  outline-offset: 2px;
+}
+
+.runbook-copy,
+.runbook-metric {
+  font-size: 12px;
+  line-height: 1.55;
+  color: #444;
+  padding-bottom: 0.55rem;
+}
+
+.runbook-metric {
+  color: #7b76c1;
+  padding-bottom: 0.25rem;
+}
+
+.stack-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  margin-bottom: 0.55rem;
+}
+
+.stack-chip {
+  font-size: 10px;
+  color: #7b76c1;
+  background: #eeedfe;
+  border-radius: 4px;
+  padding: 1px 6px;
+}
+
+.runbook-query {
+  display: inline-block;
+  font-size: 11px;
+  color: #7b76c1;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  margin-bottom: 0.75rem;
+}
+
+.runbook.is-compact .runbook-toggle {
+  padding: 0.25rem 0;
+  font-size: 14px;
+}
+
+.work-empty {
+  font-size: 12px;
+  color: #aaa;
+  padding: 0.75rem 0;
+}
+
+.school-leadership {
+  margin-top: 1.5rem;
+}
+
 /* tablet */
 @media screen and (max-width: 1024px) {
   .text-container,
@@ -206,6 +445,13 @@ a {
 
   .navbar img {
     height: 65px;
+  }
+
+  body.page-work .text-container,
+  body.page-work .navbar,
+  body.page-work .footer,
+  body.page-work .copyright {
+    max-width: 720px;
   }
 }
 
@@ -233,6 +479,58 @@ a {
 
   .experience-row {
     font-size: 13px;
+  }
+
+  .work-header {
+    flex-wrap: wrap;
+  }
+
+  .work-meta {
+    display: none;
+  }
+
+  .sys-node {
+    font-size: 10px;
+    padding: 2px 6px;
+  }
+
+  .runbook-toggle {
+    display: grid;
+    grid-template-columns: 3rem 1fr auto;
+    align-items: baseline;
+    column-gap: 0.5rem;
+    font-size: 13px;
+  }
+
+  .runbook.is-compact .runbook-toggle {
+    display: flex;
+  }
+
+  .runbook-toggle .line {
+    display: none;
+  }
+
+  .runbook-year {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .runbook-title {
+    grid-column: 2;
+    grid-row: 1;
+    white-space: normal;
+  }
+
+  .runbook-toggle .company-name {
+    grid-column: 2;
+    grid-row: 2;
+    white-space: normal;
+  }
+
+  .runbook-chevron {
+    grid-column: 3;
+    grid-row: 1 / span 2;
+    align-self: center;
   }
 }
 
@@ -288,5 +586,19 @@ a {
 
   .experience-row {
     font-size: 12px;
+  }
+
+  .runbook-toggle {
+    flex-wrap: wrap;
+    font-size: 12px;
+  }
+
+  .runbook-title,
+  .runbook-toggle .company-name {
+    white-space: normal;
+  }
+
+  .runbook-toggle .line {
+    display: none;
   }
 }

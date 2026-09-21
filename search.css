@@ -1,8 +1,19 @@
 #search-label {
   font-weight: 900;
   font-size: 14px;
+}
+
+.session-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
   margin-bottom: 0.75rem;
-  display: block;
+}
+
+#session-status {
+  font-size: 11px;
+  color: #aaa;
 }
 
 #search-wrapper {
@@ -12,7 +23,7 @@
   border: 1px solid #7b76c1;
   border-radius: 6px;
   padding: 9px 14px;
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
 }
 
 #search-caret {
@@ -48,11 +59,85 @@
   font-size: 10px;
 }
 
+#command-menu {
+  border: 0.5px solid #7b76c1;
+  border-radius: 6px;
+  margin-bottom: 0.75rem;
+  overflow: hidden;
+}
+
+.command-item {
+  all: unset;
+  box-sizing: border-box;
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  gap: 1rem;
+  cursor: pointer;
+  padding: 8px 12px;
+  font-family: inherit;
+  font-size: 12px;
+  color: #7b76c1;
+}
+
+.command-item + .command-item {
+  border-top: 0.5px solid #eee;
+}
+
+.command-item.is-active,
+.command-item:hover {
+  background: #eeedfe;
+}
+
+.command-hint {
+  color: #aaa;
+  font-size: 11px;
+}
+
 #results-meta {
   font-size: 11px;
   color: #aaa;
   margin-bottom: 0.6rem;
   min-height: 1.2em;
+}
+
+#empty-state {
+  margin: 0.4rem 0 1rem;
+}
+
+.session-idle {
+  font-size: 11px;
+  color: #aaa;
+  margin-bottom: 0.45rem;
+}
+
+.demo-line {
+  all: unset;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 13px;
+  color: #7b76c1;
+  width: 100%;
+}
+
+.blink-block {
+  font-size: 11px;
+  animation: blink 1s steps(1) infinite;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+.empty-hint {
+  font-size: 11px;
+  color: #aaa;
+  margin-top: 0.55rem;
 }
 
 #results-list {
@@ -101,10 +186,15 @@
   margin-bottom: 3px;
 }
 
+.result-title a {
+  color: inherit;
+}
+
 .result-body {
   font-size: 12px;
   color: #666;
   line-height: 1.5;
+  white-space: pre-wrap;
 }
 
 .result-body mark {
@@ -114,6 +204,46 @@
   padding: 0 2px;
 }
 
+.citation-row,
+.resume-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 0.75rem;
+}
+
+.citation-label {
+  font-size: 10px;
+  color: #aaa;
+}
+
+.citation-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: inherit;
+  border-radius: 4px;
+  padding: 4px 0;
+}
+
+.citation-link.focused,
+.citation-link:hover {
+  color: #7b76c1;
+}
+
+.citation-org {
+  margin-left: auto;
+  color: #aaa;
+  font-size: 11px;
+}
+
+.command-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 0.7rem;
+}
 
 #pagination {
   display: flex;
@@ -124,12 +254,21 @@
   color: #aaa;
 }
 
+#pagination[hidden] {
+  display: none;
+}
+
 .page-btn {
   all: unset;
   cursor: pointer;
   color: #7b76c1;
   font-family: "JetBrains Mono", "JetBrains Mono Fallback", monospace;
   font-size: 11px;
+}
+
+a.page-btn {
+  text-decoration: underline;
+  text-underline-offset: 2px;
 }
 
 .page-btn:disabled {
@@ -140,7 +279,6 @@
 #page-indicator {
   margin: 0 0.25rem;
 }
-
 
 #search-suggestions {
   margin-top: 0.75rem;
@@ -158,13 +296,16 @@
   cursor: pointer;
   text-decoration: underline;
   text-underline-offset: 2px;
-  white-space: nowrap; /* stops individual chips from breaking mid-word */
+  white-space: nowrap;
 }
 
 .suggestion-chip:hover {
   opacity: 0.75;
 }
 
+.dot-sep {
+  color: #ccc;
+}
 
 @media screen and (max-width: 480px) {
   #search-hints {
